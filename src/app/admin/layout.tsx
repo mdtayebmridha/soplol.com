@@ -13,6 +13,8 @@ export const metadata = {
   },
 };
 
+export const instant = false;
+
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
   const session = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
