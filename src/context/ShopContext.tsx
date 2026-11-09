@@ -184,36 +184,39 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     try {
-      const savedCurrency = localStorage.getItem('soplol_currency') as Currency;
-      if (savedCurrency && (savedCurrency === 'BDT' || savedCurrency === 'USD')) {
-        setCurrencyState(savedCurrency);
-      }
+      // ব্রাউজার চেক যোগ করা হয়েছে যাতে সার্ভার সাইড রেন্ডারিংয়ে এরর না দেয়
+      if (typeof window !== 'undefined') {
+        const savedCurrency = localStorage.getItem('soplol_currency') as Currency;
+        if (savedCurrency && (savedCurrency === 'BDT' || savedCurrency === 'USD')) {
+          setCurrencyState(savedCurrency);
+        }
 
-      const savedCart = localStorage.getItem('soplol_cart');
-      if (savedCart) {
-        setCart(JSON.parse(savedCart));
-      }
+        const savedCart = localStorage.getItem('soplol_cart');
+        if (savedCart) {
+          setCart(JSON.parse(savedCart));
+        }
 
-      const savedWishlist = localStorage.getItem('soplol_wishlist');
-      if (savedWishlist) {
-        setWishlist(JSON.parse(savedWishlist));
-      }
+        const savedWishlist = localStorage.getItem('soplol_wishlist');
+        if (savedWishlist) {
+          setWishlist(JSON.parse(savedWishlist));
+        }
 
-      const savedOrders = localStorage.getItem('soplol_orders');
-      if (savedOrders) {
-        setOrders(JSON.parse(savedOrders));
-      }
+        const savedOrders = localStorage.getItem('soplol_orders');
+        if (savedOrders) {
+          setOrders(JSON.parse(savedOrders));
+        }
 
-      const savedTheme = localStorage.getItem('soplol_theme_settings');
-      if (savedTheme) {
-        const parsed = JSON.parse(savedTheme);
-        setThemeSettings({
-          ...DEFAULT_THEME_SETTINGS,
-          ...parsed,
-          blocks: parsed.blocks && Array.isArray(parsed.blocks) && parsed.blocks.length > 0
-            ? parsed.blocks
-            : DEFAULT_PAGE_BLOCKS,
-        });
+        const savedTheme = localStorage.getItem('soplol_theme_settings');
+        if (savedTheme) {
+          const parsed = JSON.parse(savedTheme);
+          setThemeSettings({
+            ...DEFAULT_THEME_SETTINGS,
+            ...parsed,
+            blocks: parsed.blocks && Array.isArray(parsed.blocks) && parsed.blocks.length > 0
+              ? parsed.blocks
+              : DEFAULT_PAGE_BLOCKS,
+          });
+        }
       }
     } catch (e) {
       console.error('Failed to parse localStorage data', e);
@@ -256,7 +259,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   const setCurrency = (curr: Currency) => {
     setCurrencyState(curr);
     try {
-      localStorage.setItem('soplol_currency', curr);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_currency', curr);
+      }
     } catch {}
   };
 
@@ -282,7 +287,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   const saveCart = (newCart: CartItem[]) => {
     setCart(newCart);
     try {
-      localStorage.setItem('soplol_cart', JSON.stringify(newCart));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_cart', JSON.stringify(newCart));
+      }
     } catch {}
   };
 
@@ -370,7 +377,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     }
     setWishlist(updated);
     try {
-      localStorage.setItem('soplol_wishlist', JSON.stringify(updated));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_wishlist', JSON.stringify(updated));
+      }
     } catch {}
   };
 
@@ -391,7 +400,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     const updatedOrders = [newOrder, ...orders];
     setOrders(updatedOrders);
     try {
-      localStorage.setItem('soplol_orders', JSON.stringify(updatedOrders));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_orders', JSON.stringify(updatedOrders));
+      }
     } catch {}
 
     clearCart();
@@ -408,7 +419,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     );
     setOrders(updated);
     try {
-      localStorage.setItem('soplol_orders', JSON.stringify(updated));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_orders', JSON.stringify(updated));
+      }
     } catch {}
   };
 
@@ -417,7 +430,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     const updated = [product, ...products];
     setProducts(updated);
     try {
-      localStorage.setItem('soplol_custom_products', JSON.stringify(updated));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_custom_products', JSON.stringify(updated));
+      }
     } catch {}
     showToast('New product added successfully!');
   };
@@ -428,7 +443,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     );
     setProducts(updated);
     try {
-      localStorage.setItem('soplol_custom_products', JSON.stringify(updated));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_custom_products', JSON.stringify(updated));
+      }
     } catch {}
     showToast('Product updated successfully!');
   };
@@ -437,7 +454,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     const updated = products.filter((p) => p.id !== id);
     setProducts(updated);
     try {
-      localStorage.setItem('soplol_custom_products', JSON.stringify(updated));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_custom_products', JSON.stringify(updated));
+      }
     } catch {}
     showToast('Product removed');
   };
@@ -446,7 +465,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     setThemeSettings((prev) => {
       const merged = { ...prev, ...newSettings };
       try {
-        localStorage.setItem('soplol_theme_settings', JSON.stringify(merged));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('soplol_theme_settings', JSON.stringify(merged));
+        }
       } catch {}
       return merged;
     });
@@ -456,7 +477,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
   const resetThemeSettings = () => {
     setThemeSettings(DEFAULT_THEME_SETTINGS);
     try {
-      localStorage.setItem('soplol_theme_settings', JSON.stringify(DEFAULT_THEME_SETTINGS));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('soplol_theme_settings', JSON.stringify(DEFAULT_THEME_SETTINGS));
+      }
     } catch {}
     showToast('Theme reset to default layout.');
   };
@@ -475,7 +498,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       }
       const updated = { ...prev, blocks: updatedBlocks };
       try {
-        localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        }
       } catch {}
       return updated;
     });
@@ -489,7 +514,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       );
       const updated = { ...prev, blocks: updatedBlocks };
       try {
-        localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        }
       } catch {}
       return updated;
     });
@@ -500,7 +527,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       const updatedBlocks = (prev.blocks || []).filter((b) => b.id !== blockId);
       const updated = { ...prev, blocks: updatedBlocks };
       try {
-        localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        }
       } catch {}
       return updated;
     });
@@ -511,7 +540,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     setThemeSettings((prev) => {
       const updated = { ...prev, blocks: newBlocks };
       try {
-        localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        }
       } catch {}
       return updated;
     });
@@ -531,7 +562,9 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       updatedBlocks.splice(index + 1, 0, cloned);
       const updated = { ...prev, blocks: updatedBlocks };
       try {
-        localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('soplol_theme_settings', JSON.stringify(updated));
+        }
       } catch {}
       return updated;
     });
