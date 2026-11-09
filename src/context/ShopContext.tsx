@@ -316,7 +316,8 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     } else {
       updatedCart = [
         ...cart,
-        {\n          id: cartItemId,
+        {
+          id: cartItemId,
           productId: product.id,
           product,
           quantity,
