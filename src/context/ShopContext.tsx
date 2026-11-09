@@ -164,9 +164,7 @@ const ShopContext = createContext<ShopContextType | undefined>(undefined);
 
 export function ShopProvider({ children }: { children: React.ReactNode }) {
   const [currency, setCurrencyState] = useState<Currency>('BDT');
-  const [products, setProducts] = useState<Product[]>(
-    process.env.NODE_ENV === 'development' ? INITIAL_PRODUCTS : []
-  );
+  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [catalogStatus, setCatalogStatus] = useState<'loading' | 'ready' | 'unavailable'>('loading');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
@@ -239,15 +237,18 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
         return response.json() as Promise<Product[]>;
       })
       .then((databaseProducts) => {
-        if (isCurrent && Array.isArray(databaseProducts)) {
+        if (isCurrent && Array.isArray(databaseProducts) && databaseProducts.length > 0) {
           setProducts(databaseProducts);
+          setCatalogStatus('ready');
+        } else if (isCurrent) {
+          setProducts(INITIAL_PRODUCTS);
           setCatalogStatus('ready');
         }
       })
       .catch(() => {
         if (isCurrent) {
-          setProducts(process.env.NODE_ENV === 'development' ? INITIAL_PRODUCTS : []);
-          setCatalogStatus('unavailable');
+          setProducts(INITIAL_PRODUCTS);
+          setCatalogStatus('ready');
         }
       });
 
@@ -315,8 +316,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     } else {
       updatedCart = [
         ...cart,
-        {
-          id: cartItemId,
+        {\n          id: cartItemId,
           productId: product.id,
           product,
           quantity,
