@@ -433,10 +433,10 @@ function NavbarContent() {
             : 'max-h-0 opacity-0 -translate-y-2 pointer-events-none border-t-transparent overflow-hidden'
         }`}
       >
-        <div className="max-w-[1536px] mx-auto px-3 sm:px-8 lg:px-12">
-          <ul className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 text-xs font-semibold py-2 overflow-visible whitespace-nowrap scrollbar-none justify-start md:justify-center">
+        <div className="w-full max-w-[1536px] mx-auto px-2 sm:px-8 lg:px-12 overflow-x-auto scrollbar-none overscroll-x-contain touch-pan-x">
+          <ul className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 text-xs font-semibold py-2 whitespace-nowrap scrollbar-none justify-start md:justify-center w-max min-w-full">
             {/* Apple-style Master Store Hub Pill & Mega-Menu */}
-            <li className="relative group/navitem subnav-item-container">
+            <li className="relative group/navitem subnav-item-container shrink-0">
               <div className="inline-flex items-center rounded-full bg-stone-100/90 hover:bg-[#D9531E] border border-stone-200/80 shadow-2xs hover:shadow-xs transition-all duration-200 text-xs font-bold text-stone-900 hover:text-white">
                 <Link
                   href="/shop"
@@ -460,9 +460,9 @@ function NavbarContent() {
                 </button>
               </div>
 
-              {/* Mega-hub flyout for Store */}
+              {/* Mega-hub flyout for Store (Desktop Only) */}
               <div
-                className={`absolute top-full left-0 sm:left-0 pt-2 transition-all duration-200 ease-out z-50 ${
+                className={`hidden md:block absolute top-full left-0 sm:left-0 pt-2 transition-all duration-200 ease-out z-50 ${
                   activeSubDropdown === 'store'
                     ? 'opacity-100 pointer-events-auto'
                     : 'opacity-0 pointer-events-none group-hover/navitem:opacity-100 group-hover/navitem:pointer-events-auto'
@@ -611,7 +611,7 @@ function NavbarContent() {
                 (!targetParams.has('sub') || searchParams.get('sub') === targetParams.get('sub'));
 
               return (
-                <li key={idx} className="relative group/navitem subnav-item-container">
+                <li key={idx} className="relative group/navitem subnav-item-container shrink-0">
                   <div className={`inline-flex items-center rounded-full border shadow-2xs hover:shadow-xs transition-all duration-200 pl-3.5 pr-2 py-1.5 text-xs ${isCurrentCategory ? 'bg-[#FAF3EA] border-[#D9531E]/30 font-extrabold text-[#D9531E]' : 'bg-stone-100/60 border-transparent font-semibold text-stone-700 hover:bg-white hover:border-stone-200/90 hover:text-stone-950'}`}>
                     <Link
                       href={cat.href}
@@ -636,9 +636,9 @@ function NavbarContent() {
                     </button>
                   </div>
 
-                  {/* Silky Glassmorphism Flyout Dropdown */}
+                  {/* Silky Glassmorphism Flyout Dropdown (Desktop Only) */}
                   <div
-                    className={`absolute top-full ${dropdownAlignClass} pt-2 transition-all duration-200 ease-out z-50 ${
+                    className={`hidden md:block absolute top-full ${dropdownAlignClass} pt-2 transition-all duration-200 ease-out z-50 ${
                       isDropdownOpen
                         ? 'opacity-100 pointer-events-auto'
                         : 'opacity-0 pointer-events-none group-hover/navitem:opacity-100 group-hover/navitem:pointer-events-auto'
@@ -694,6 +694,165 @@ function NavbarContent() {
           </ul>
         </div>
       </nav>
+
+      {/* Mobile Subcategory Modal Popup */}
+      {activeSubDropdown && (
+        <div
+          className="md:hidden fixed inset-0 z-50 flex items-start justify-center pt-28 px-4 bg-black/40 backdrop-blur-xs animate-fade-in"
+          onClick={() => setActiveSubDropdown(null)}
+        >
+          <div
+            className="w-full max-w-sm bg-white rounded-3xl p-5 shadow-2xl border border-stone-200 animate-scale-in max-h-[75vh] overflow-y-auto space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {activeSubDropdown === 'store' ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+                  <div>
+                    <h3 className="text-sm font-bold text-stone-950 font-serif flex items-center gap-1.5">
+                      <ShoppingBag className="w-4 h-4 text-[#D9531E]" />
+                      SOPLOL Store
+                    </h3>
+                    <p className="text-[11px] text-stone-500">
+                      Browse all departments & categories
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setActiveSubDropdown(null)}
+                    className="p-1 rounded-full text-stone-400 hover:text-stone-700 bg-stone-100 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { name: 'Personalized Gifts', href: '/shop?category=gifts', img: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=240' },
+                    { name: "Men's Apparel", href: '/shop?category=fashion&sub=men', img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=240' },
+                    { name: "Women's Wear", href: '/shop?category=fashion&sub=women', img: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=240' },
+                    { name: 'Boys & Girls', href: '/shop?category=fashion&sub=kids', img: 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?q=80&w=240' },
+                    { name: 'Home & Living', href: '/shop?category=home', img: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?q=80&w=240' },
+                    { name: 'Desk & Office', href: '/shop?category=office', img: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=240' },
+                  ].map((item, i) => (
+                    <Link
+                      key={i}
+                      href={item.href}
+                      onClick={() => setActiveSubDropdown(null)}
+                      className="flex items-center gap-2 p-2 rounded-xl bg-stone-50 hover:bg-[#FAF3EA] border border-stone-200/70"
+                    >
+                      <img src={item.img} alt={item.name} className="w-9 h-9 rounded-lg object-cover shrink-0" />
+                      <span className="text-[11px] font-bold text-stone-900 truncate">{item.name}</span>
+                    </Link>
+                  ))}
+                </div>
+
+                <Link
+                  href="/shop"
+                  onClick={() => setActiveSubDropdown(null)}
+                  className="w-full py-2.5 bg-[#D9531E] hover:bg-[#BA4113] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md text-center block"
+                >
+                  Visit Full Store →
+                </Link>
+              </div>
+            ) : (() => {
+              const catIndex = parseInt(activeSubDropdown.replace('cat-', ''));
+              const catList = [
+                {
+                  name: 'Personalized Gifts',
+                  bnName: 'উপহার ও স্পেশাল',
+                  href: '/shop?category=gifts',
+                  image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=400&auto=format&fit=crop',
+                },
+                {
+                  name: "Men's Apparel",
+                  bnName: 'পুরুষদের পোশাক',
+                  href: '/shop?category=fashion&sub=men',
+                  image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=400&auto=format&fit=crop',
+                },
+                {
+                  name: "Women's Wear",
+                  bnName: 'নারীদের ফ্যাশন',
+                  href: '/shop?category=fashion&sub=women',
+                  image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=400&auto=format&fit=crop',
+                },
+                {
+                  name: 'Boys & Girls',
+                  bnName: 'বাচ্চাদের পোশাক',
+                  href: '/shop?category=fashion&sub=kids',
+                  image: 'https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?q=80&w=400&auto=format&fit=crop',
+                },
+                {
+                  name: 'Home & Living',
+                  bnName: 'হোম ডেকোর ও লিভিং',
+                  href: '/shop?category=home',
+                  image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?q=80&w=400&auto=format&fit=crop',
+                },
+                {
+                  name: 'Desk & Office',
+                  bnName: 'অফিস ও ওয়ার্কস্পেস',
+                  href: '/shop?category=office',
+                  image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=400&auto=format&fit=crop',
+                },
+              ];
+              const cat = catList[catIndex];
+              if (!cat) return null;
+              const targetParams = new URLSearchParams(cat.href.split('?')[1] || '');
+              const categoryProducts = products.filter((product) =>
+                product.category === targetParams.get('category')
+                && (!targetParams.has('sub') || (targetParams.get('sub') === 'kids'
+                  ? product.subcategory === 'boys' || product.subcategory === 'girls'
+                  : product.subcategory === targetParams.get('sub')))
+              );
+
+              return (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+                    <div>
+                      <h4 className="text-sm font-bold text-stone-900">{cat.name}</h4>
+                      <span className="text-xs text-stone-500">{cat.bnName} ({categoryProducts.length} items)</span>
+                    </div>
+                    <button
+                      onClick={() => setActiveSubDropdown(null)}
+                      className="p-1 rounded-full text-stone-400 hover:text-stone-700 bg-stone-100 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-1">
+                      {categoryProducts.slice(0, 4).map((product) => (
+                        <Link
+                          key={product.id}
+                          href={`/product/${encodeURIComponent(product.id)}`}
+                          onClick={() => setActiveSubDropdown(null)}
+                          className="text-xs font-medium text-stone-700 hover:text-[#D9531E] hover:bg-stone-50 p-2 rounded-lg block transition-colors truncate"
+                        >
+                          {product.title}
+                        </Link>
+                      ))}
+                      {categoryProducts.length === 0 && (
+                        <span className="text-xs text-stone-500 p-2 block">No items listed.</span>
+                      )}
+                    </div>
+                    <div className="rounded-xl overflow-hidden aspect-square">
+                      <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
+                    </div>
+                  </div>
+
+                  <Link
+                    href={cat.href}
+                    onClick={() => setActiveSubDropdown(null)}
+                    className="w-full py-2.5 bg-[#D9531E] hover:bg-[#BA4113] text-white font-bold text-xs uppercase tracking-wider rounded-xl text-center block shadow-md"
+                  >
+                    Browse all in {cat.name} →
+                  </Link>
+                </div>
+              );
+            })()}
+          </div>
+        </div>
+      )}
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
