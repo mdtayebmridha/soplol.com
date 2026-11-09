@@ -1,5 +1,5 @@
 'use client';
-
+export const dynamic = 'force-dynamic';
 import React, { Suspense } from 'react';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import { usePathname } from 'next/navigation';
