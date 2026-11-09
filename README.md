@@ -14,11 +14,26 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3007](http://localhost:3007) with your browser to see the result.
+
+## Store database
+
+The store uses PostgreSQL through Prisma. On the VPS, use a dedicated database named `soplol_store` and app role `soplol_app`; keep PostgreSQL bound to localhost so it is not exposed to the public network. Set `DATABASE_URL` and `DIRECT_URL` in the deployment environment to the same local PostgreSQL URL (there is no pooler). `.env.example` shows the variable names and local URL shape; replace the placeholder password privately. For local development from another machine, use an SSH tunnel rather than exposing port 5432. Keep database credentials out of Git and chat.
+
+For local development, place env files such as `.env.local` in the project root beside `package.json`; Next.js does not load `src/.env.local`. The root `.env.local` is ignored by Git.
+
+After adding both URLs, run `npm run db:generate`, `npm run db:migrate`, and `npm run db:seed` from the project root.
+After deployment, `GET /api/health/database` reports whether `DATABASE_URL` is configured and the app can execute a database query; it does not expose credentials or database contents.
+
+## Admin access
+
+Admin routes are private and require the `ADMIN_ACCESS_KEY` environment variable. Set it to a strong random secret of at least 32 characters in your local environment or deployment settings. Sign in at `/admin-access`; without a configured key, admin routes remain locked.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Customer sign-up and sign-in use database-backed customer records, scrypt password hashes, and revocable HTTP-only session cookies. Orders can be placed as a guest; signed-in orders are linked to the customer account.
+
+Online payment uses the SSLCommerz hosted checkout flow when valid server-side credentials and `APP_URL` are configured. The app validates provider callbacks server-to-server before marking an order paid. Until credentials are configured, online payment remains disabled and Cash on Delivery is the only available option. Keep merchant credentials out of client-side variables.
 
 ## Learn More
 
