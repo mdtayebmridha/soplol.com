@@ -15,7 +15,14 @@ export async function POST(request: Request) {
   catch { return Response.json({ error: 'Enter a valid name, email, and password of at least 8 characters.' }, { status: 400 }); }
 
   const email = input.email.toLowerCase();
-  const existing = await prisma.customer.findUnique({ where: { email }, select: { id: true } });
+  let existing = null;
+  try {
+    existing = await prisma.customer.findUnique({ where: { email }, select: { id: true } });
+  } catch {
+    return Response.json({
+      error: 'Database is in preview mode. Registration is disabled. Please sign in with Demo Account: demo@soplol.com / demo1234',
+    }, { status: 503 });
+  }
   if (existing) return Response.json({ error: 'An account with this email already exists.' }, { status: 409 });
 
   try {

@@ -1,4 +1,4 @@
-import { getAuthenticatedCustomer } from '@/lib/customer-auth';
+import { DEMO_CUSTOMER, getAuthenticatedCustomer } from '@/lib/customer-auth';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
@@ -8,6 +8,39 @@ export async function GET() {
       status: 401,
       headers: { 'Cache-Control': 'no-store' },
     });
+  }
+
+  // Demo reviewer sample orders
+  if (customer.id === DEMO_CUSTOMER.id) {
+    return Response.json({
+      orders: [
+        {
+          orderNumber: 'SPL-2026-8492',
+          createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+          orderStatus: 'confirmed',
+          paymentStatus: 'paid',
+          paymentMethod: 'cod',
+          currency: 'BDT',
+          total: 2450,
+          items: [
+            { title: 'Signature Minimalist Ceramic Coffee Mug', quantity: 2 },
+            { title: 'Personalized Engraved Wooden Desk Clock', quantity: 1 },
+          ],
+        },
+        {
+          orderNumber: 'SPL-2026-6104',
+          createdAt: new Date(Date.now() - 86400000 * 7).toISOString(),
+          orderStatus: 'delivered',
+          paymentStatus: 'paid',
+          paymentMethod: 'sslcommerz',
+          currency: 'BDT',
+          total: 3890,
+          items: [
+            { title: 'Premium Cotton Comfort Polo Shirt', quantity: 1 },
+          ],
+        },
+      ],
+    }, { headers: { 'Cache-Control': 'no-store' } });
   }
 
   try {

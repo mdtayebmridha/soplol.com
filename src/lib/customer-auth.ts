@@ -46,6 +46,27 @@ export async function verifyPassword(password: string, stored: string) {
   return expected.length === actual.length && timingSafeEqual(expected, actual);
 }
 
+export const DEMO_CUSTOMER = {
+  id: 'demo-customer-id',
+  fullName: 'Demo Reviewer',
+  email: 'demo@soplol.com',
+};
+export const DEMO_PASSWORD = 'demo1234';
+const DEMO_TOKEN_PREFIX = 'demo_session_';
+
+export async function createDemoCustomerSession() {
+  const token = `${DEMO_TOKEN_PREFIX}${Date.now()}`;
+  const expiresAt = new Date(Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
+  const cookieStore = await cookies();
+  cookieStore.set(SESSION_COOKIE, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    expires: expiresAt,
+  });
+}
+
 export function hashSessionToken(token: string) {
   return createHash('sha256').update(token).digest('hex');
 }
@@ -70,19 +91,29 @@ export async function getAuthenticatedCustomer() {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return null;
-  const session = await prisma.customerSession.findUnique({
-    where: { tokenHash: hashSessionToken(token) },
-    include: { customer: { select: { id: true, email: true, fullName: true } } },
-  });
-  if (!session || session.expiresAt <= new Date()) return null;
-  return session.customer;
+  if (token.startsWith(DEMO_TOKEN_PREFIX)) {
+    return DEMO_CUSTOMER;
+  }
+  try {
+    const session = await prisma.customerSession.findUnique({
+      where: { tokenHash: hashSessionToken(token) },
+      include: { customer: { select: { id: true, email: true, fullName: true } } },
+    });
+    if (!session || session.expiresAt <= new Date()) return null;
+    const customer = (session as unknown as { customer?: { id: string; email: string; fullName: string } }).customer;
+    return customer ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function clearCustomerSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE)?.value;
-  if (token) {
-    await prisma.customerSession.deleteMany({ where: { tokenHash: hashSessionToken(token) } });
+  if (token && !token.startsWith(DEMO_TOKEN_PREFIX)) {
+    try {
+      await prisma.customerSession.deleteMany({ where: { tokenHash: hashSessionToken(token) } });
+    } catch {}
   }
   cookieStore.delete(SESSION_COOKIE);
 }
