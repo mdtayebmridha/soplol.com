@@ -4,7 +4,7 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="mx-auto max-w-4xl space-y-8 px-4 py-16 text-stone-900">
       <header className="border-b border-stone-200 pb-6">
-        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#D9531E]">Data Protection</span>
+        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-[#242735]">Data Protection</span>
         <h1 className="text-3xl font-extrabold tracking-tight">Privacy Policy</h1>
         <p className="mt-2 text-sm text-stone-500">Information the storefront uses to process accounts, orders, and inquiries.</p>
       </header>
@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
         <section className="space-y-3 border-t border-stone-100 pt-6">
           <h2 className="font-bold text-stone-900">Privacy questions</h2>
           <p>For questions or a request about your data, use the contact form. Include the account email or order number needed to identify the record.</p>
-          <Link href="/contact" className="inline-block font-semibold text-[#D9531E] underline">Contact soplol</Link>
+          <Link href="/contact" className="inline-block font-semibold text-[#242735] underline">Contact soplol</Link>
         </section>
       </div>
     </main>

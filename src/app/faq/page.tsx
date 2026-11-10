@@ -28,7 +28,7 @@ export default function FAQPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-10 px-4 py-16 text-neutral-900">
       <div className="border-b border-neutral-200 pb-6">
-        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-600">Got Questions?</span>
+        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-800">Got Questions?</span>
         <h1 className="text-3xl font-extrabold tracking-tight">Frequently Asked Questions</h1>
         <p className="mt-2 text-sm text-neutral-500">Current information about accounts, orders, and checkout.</p>
       </div>
@@ -36,7 +36,7 @@ export default function FAQPage() {
         {faqs.map((faq) => (
           <div key={faq.question} className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs">
             <h2 className="flex items-start gap-2 text-sm font-bold text-neutral-900 sm:text-base">
-              <HelpCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+              <HelpCircle className="mt-0.5 h-5 w-5 shrink-0 text-slate-800" />
               {faq.question}
             </h2>
             <p className="pl-7 text-xs leading-relaxed text-neutral-600 sm:text-sm">{faq.answer}</p>

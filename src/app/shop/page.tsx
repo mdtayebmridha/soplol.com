@@ -76,7 +76,7 @@ function ShopCatalog({ searchParams }: { searchParams: ReturnType<typeof useSear
   };
 
   return (
-    <div className="w-full bg-[#FAF9F6] min-h-screen text-stone-900">
+    <div className="w-full bg-[#F3EDE3] min-h-screen text-stone-900">
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-8 lg:px-12 py-6 sm:py-10 space-y-8">
         {/* Product Catalog */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -94,7 +94,7 @@ function ShopCatalog({ searchParams }: { searchParams: ReturnType<typeof useSear
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as 'featured' | 'price-low' | 'price-high' | 'new')}
-                  className="bg-stone-50 border border-stone-200 text-stone-900 rounded-xl px-3 py-1.5 text-xs font-bold focus:outline-hidden focus:ring-2 focus:ring-[#D9531E]"
+                  className="bg-stone-50 border border-stone-200 text-stone-900 rounded-xl px-3 py-1.5 text-xs font-bold focus:outline-hidden focus:ring-2 focus:ring-[#242735]"
                 >
                   <option value="featured">Featured Picks</option>
                   <option value="new">New Arrivals</option>
@@ -114,7 +114,7 @@ function ShopCatalog({ searchParams }: { searchParams: ReturnType<typeof useSear
               </div>
             ) : filteredProducts.length === 0 ? (
               <div className="bg-white rounded-3xl border border-stone-200 p-12 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-700 mx-auto flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-amber-50 text-slate-800 mx-auto flex items-center justify-center">
                   <Search className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-serif font-bold text-stone-900">

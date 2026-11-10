@@ -83,7 +83,7 @@ export default function ProductCard({ product, shapeOverride }: ProductCardProps
             e.stopPropagation();
             setQuickViewProduct(product);
           }}
-          className="absolute top-12 right-2.5 w-8 h-8 rounded-full bg-white/95 hover:bg-white text-stone-700 hover:text-[#D9531E] flex items-center justify-center shadow-md transition-all z-10 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 sm:translate-x-1 sm:group-hover:translate-x-0 duration-200 active:scale-75"
+          className="absolute top-12 right-2.5 w-8 h-8 rounded-full bg-white/95 hover:bg-white text-stone-700 hover:text-[#242735] flex items-center justify-center shadow-md transition-all z-10 opacity-90 sm:opacity-0 sm:group-hover:opacity-100 sm:translate-x-1 sm:group-hover:translate-x-0 duration-200 active:scale-75"
           title="Quick View"
           aria-label="Quick View"
         >
@@ -109,7 +109,7 @@ export default function ProductCard({ product, shapeOverride }: ProductCardProps
             <span className="truncate font-medium capitalize text-stone-600">{product.category}</span>
           </div>
           {/* Product Title */}
-          <Link href={`/product/${product.id}`} className="block group-hover:text-amber-800 transition-colors">
+          <Link href={`/product/${product.id}`} className="block group-hover:text-slate-900 transition-colors">
             <h3 className="text-xs sm:text-sm font-semibold text-stone-900 line-clamp-2 leading-snug">
               {product.title}
             </h3>
@@ -129,7 +129,7 @@ export default function ProductCard({ product, shapeOverride }: ProductCardProps
             {/* Mobile quick add button */}
             <button
               onClick={handleQuickAdd}
-              className="sm:hidden p-1.5 rounded-lg bg-stone-900 text-white hover:bg-[#D9531E] transition-colors active:scale-90"
+              className="sm:hidden p-1.5 rounded-lg bg-stone-900 text-white hover:bg-[#242735] transition-colors active:scale-90"
               title="Add to Cart"
               aria-label="Add to Cart"
             >

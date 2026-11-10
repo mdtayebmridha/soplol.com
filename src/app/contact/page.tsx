@@ -49,11 +49,11 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="bg-[#FDFBF7] text-stone-900 pb-20 space-y-12">
+    <div className="bg-[#F7F4EE] text-stone-900 pb-20 space-y-12">
       {/* Header */}
-      <section className="bg-[#FAF3EA] border-b border-stone-200/80 py-12 sm:py-16">
+      <section className="bg-[#E7DED0] border-b border-stone-200/80 py-12 sm:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-3">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#D9531E]">
+          <span className="text-xs font-extrabold uppercase tracking-widest text-[#242735]">
             We&apos;re Here to Help
           </span>
           <h1 className="text-3xl sm:text-5xl font-serif font-black text-stone-900 tracking-tight">
@@ -94,15 +94,15 @@ export default function ContactPage() {
               </p>
 
               {submitted ? (
-                <div className="p-8 text-center bg-emerald-50 border border-emerald-200 rounded-2xl space-y-3">
-                  <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
+                <div className="p-8 text-center bg-amber-50 border border-slate-200 rounded-2xl space-y-3">
+                  <CheckCircle2 className="w-12 h-12 text-slate-800 mx-auto" />
                   <h3 className="text-base font-bold text-stone-900">Thank You, {name}!</h3>
                   <p className="text-xs text-stone-600 max-w-sm mx-auto">
                     Your message about &quot;{subject}&quot; is saved. Reference: <strong>{reference}</strong>.
                   </p>
                   <button
                     onClick={() => { setSubmitted(false); setReference(''); }}
-                    className="text-xs font-bold text-[#D9531E] underline pt-2"
+                    className="text-xs font-bold text-[#242735] underline pt-2"
                   >
                     Send another inquiry
                   </button>
@@ -120,7 +120,7 @@ export default function ContactPage() {
                         placeholder="e.g. Ayesha Rahman"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#D9531E]"
+                        className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#242735]"
                       />
                     </div>
 
@@ -134,7 +134,7 @@ export default function ContactPage() {
                         placeholder="ayesha@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#D9531E]"
+                        className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#242735]"
                       />
                     </div>
                   </div>
@@ -149,7 +149,7 @@ export default function ContactPage() {
                         placeholder="017XXXXXXXX"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#D9531E]"
+                        className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#242735]"
                       />
                     </div>
 
@@ -160,7 +160,7 @@ export default function ContactPage() {
                       <select
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
-                        className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#D9531E] font-medium"
+                        className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#242735] font-medium"
                       >
                         <option value="order_inquiry">Order Status & Tracking</option>
                         <option value="personalized_gifting">Custom Personalized Gift Set</option>
@@ -182,14 +182,14 @@ export default function ContactPage() {
                       placeholder="Please share details such as your Order Number (SPL-2026-XXXX) or specific customization requests..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#D9531E]"
+                      className="w-full px-3 py-2.5 bg-stone-50 border border-stone-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#242735]"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3.5 bg-[#D9531E] hover:bg-[#BA4113] text-white rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99]"
+                    className="w-full py-3.5 bg-[#242735] hover:bg-[#191C28] text-white rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99]"
                   >
                     <Send className="w-4 h-4" />
                     {isSubmitting ? 'Saving…' : 'Submit Inquiry'}

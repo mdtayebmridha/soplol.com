@@ -50,15 +50,15 @@ export default function CustomerOrdersPage() {
   };
 
   return (
-    <main className="min-h-[60vh] bg-[#FAF9F6] px-4 py-12 sm:py-16">
+    <main className="min-h-[60vh] bg-[#F3EDE3] px-4 py-12 sm:py-16">
       <div className="mx-auto max-w-4xl space-y-6">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-[#D9531E]">Customer account</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-[#242735]">Customer account</p>
             <h1 className="mt-1 text-3xl font-serif font-bold text-stone-900">Your orders</h1>
             {currentUser && <p className="mt-2 text-sm text-stone-600">Signed in as {currentUser.email}</p>}
           </div>
-          {currentUser && <button onClick={() => void signOut()} className="text-sm font-semibold text-stone-600 hover:text-[#D9531E]">Sign out</button>}
+          {currentUser && <button onClick={() => void signOut()} className="text-sm font-semibold text-stone-600 hover:text-[#242735]">Sign out</button>}
         </header>
 
         {loading ? (
@@ -69,7 +69,7 @@ export default function CustomerOrdersPage() {
             {!currentUser && (
               <button
                 onClick={() => { setAuthMode('signin'); setIsAuthModalOpen(true); }}
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#D9531E] px-5 py-2.5 text-sm font-bold text-white"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#242735] px-5 py-2.5 text-sm font-bold text-white"
               >
                 <LogIn className="h-4 w-4" /> Sign in
               </button>
@@ -80,7 +80,7 @@ export default function CustomerOrdersPage() {
             <Package className="mx-auto h-8 w-8 text-stone-400" />
             <p className="mt-3 font-semibold text-stone-800">No account orders yet</p>
             <p className="mt-1 text-sm text-stone-600">Orders placed while signed in will appear here.</p>
-            <Link href="/shop" className="mt-5 inline-block rounded-full bg-[#D9531E] px-5 py-2.5 text-sm font-bold text-white">Browse the catalog</Link>
+            <Link href="/shop" className="mt-5 inline-block rounded-full bg-[#242735] px-5 py-2.5 text-sm font-bold text-white">Browse the catalog</Link>
           </section>
         ) : (
           <div className="space-y-4">
@@ -99,7 +99,7 @@ export default function CustomerOrdersPage() {
                 <ul className="mt-4 space-y-2 text-sm text-stone-700">
                   {order.items.map((item, index) => <li key={`${order.orderNumber}-${index}`}>{item.title} <span className="text-stone-500">× {item.quantity}</span></li>)}
                 </ul>
-                <Link href={`/track-order`} className="mt-4 inline-block text-xs font-semibold text-[#D9531E] hover:underline">Track this order</Link>
+                <Link href={`/track-order`} className="mt-4 inline-block text-xs font-semibold text-[#242735] hover:underline">Track this order</Link>
               </article>
             ))}
           </div>

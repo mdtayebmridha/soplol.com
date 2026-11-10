@@ -32,50 +32,89 @@ function NavbarContent() {
   const [selectedCategory] = useState<string>('all');
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
   const [activeSubDropdown, setActiveSubDropdown] = useState<string | null>(null);
+  const [showHeader, setShowHeader] = useState(true);
   const [showSubNav, setShowSubNav] = useState(true);
-  const lastScrollYRef = useRef(0);
+  const showHeaderRef = useRef(true);
   const showSubNavRef = useRef(true);
 
-  // Directional scroll: Hide sub-category nav on scroll down, show on scroll up (Zero-Jitter rAF)
+  // Follow direct input direction and use previous/current scroll positions for non-wheel scrolling.
   useEffect(() => {
-    let ticking = false;
+    let previousScrollY = window.scrollY;
+    let userIntentUntil = 0;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          const diff = currentScrollY - lastScrollYRef.current;
+    const applyDirection = (direction: number, scroll: number) => {
+      const shouldShowHeader = scroll <= 0 || direction < 0;
+      if (shouldShowHeader !== showHeaderRef.current) {
+        showHeaderRef.current = shouldShowHeader;
+        setShowHeader(shouldShowHeader);
+      }
 
-          // If near the top, always stay open
-          if (currentScrollY <= 80) {
-            if (!showSubNavRef.current) {
-              showSubNavRef.current = true;
-              setShowSubNav(true);
-            }
-          } else if (diff > 14) {
-            // Scrolled DOWN past deadzone -> smoothly collapse
-            if (showSubNavRef.current) {
-              showSubNavRef.current = false;
-              setShowSubNav(false);
-              setActiveSubDropdown(null);
-            }
-          } else if (diff < -14) {
-            // Scrolled UP past deadzone -> smoothly reveal
-            if (!showSubNavRef.current) {
-              showSubNavRef.current = true;
-              setShowSubNav(true);
-            }
-          }
-
-          lastScrollYRef.current = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
+      if (scroll <= 0 || direction < 0) {
+        if (!showSubNavRef.current) {
+          showSubNavRef.current = true;
+          setShowSubNav(true);
+        }
+      } else if (direction > 0) {
+        if (showSubNavRef.current) {
+          showSubNavRef.current = false;
+          setShowSubNav(false);
+          setActiveSubDropdown(null);
+        }
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleNativeScroll = () => {
+      const currentScrollY = window.scrollY;
+      const direction = Math.sign(currentScrollY - previousScrollY);
+      previousScrollY = currentScrollY;
+      if (direction !== 0 && performance.now() >= userIntentUntil) {
+        applyDirection(direction, currentScrollY);
+      }
+    };
+    const handleWheel = (event: WheelEvent) => {
+      if (event.target instanceof Element && event.target.closest('[data-lenis-prevent]')) return;
+      if (event.deltaY === 0) return;
+      const currentScrollY = window.scrollY;
+      previousScrollY = currentScrollY;
+      // At the very top, let the native scroll move first so the header stays visible there.
+      if (event.deltaY > 0 && currentScrollY <= 0) {
+        userIntentUntil = 0;
+        return;
+      }
+      userIntentUntil = performance.now() + 1400;
+      applyDirection(Math.sign(event.deltaY), currentScrollY);
+    };
+    let lastTouchY: number | null = null;
+    const handleTouchStart = (event: TouchEvent) => {
+      lastTouchY = event.touches[0]?.clientY ?? null;
+    };
+    const handleTouchMove = (event: TouchEvent) => {
+      const touchY = event.touches[0]?.clientY;
+      if (touchY === undefined || lastTouchY === null) return;
+      const fingerDelta = touchY - lastTouchY;
+      lastTouchY = touchY;
+      if (Math.abs(fingerDelta) < 1) return;
+      const currentScrollY = window.scrollY;
+      previousScrollY = currentScrollY;
+      const direction = fingerDelta > 0 ? -1 : 1;
+      if (direction > 0 && currentScrollY <= 0) {
+        userIntentUntil = 0;
+        return;
+      }
+      userIntentUntil = performance.now() + 1400;
+      applyDirection(direction, currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleNativeScroll, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleNativeScroll);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
   }, []);
 
   // Close dropdowns when clicking outside
@@ -114,7 +153,12 @@ function NavbarContent() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-stone-200/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] transition-all">
+    <>
+    <header
+      style={{ transform: showHeader ? 'translateY(0)' : 'translateY(-100%)' }}
+      data-header-visible={showHeader}
+      className="fixed inset-x-0 top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-stone-200/60 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] transition-transform duration-300 ease-out will-change-transform"
+    >
       {/* Main Bar with Etsy-Style Search */}
       <div className="max-w-[1536px] mx-auto px-4 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-14 gap-4 sm:gap-6">
@@ -128,14 +172,24 @@ function NavbarContent() {
 
           {/* Brand Wordmark */}
           <Link href="/" className="flex items-center shrink-0 group">
-            <Image
-              src="/brand-text.png"
-              alt="soplol"
-              width={150}
-              height={50}
-              className="h-9 sm:h-11 w-auto object-contain transition-transform group-hover:scale-102"
-              priority
-            />
+            <span className="flex items-center gap-1.5">
+              <Image
+                src="/brand-mark-icon.png"
+                alt=""
+                width={48}
+                height={40}
+                className="h-8 sm:h-9 w-auto object-contain"
+                priority
+              />
+              <Image
+                src="/soplol-wordmark.png"
+                alt="soplol"
+                width={150}
+                height={50}
+                className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-102"
+                priority
+              />
+            </span>
           </Link>
 
           {/* Central Search Bar (Iconic Etsy pill design) */}
@@ -146,11 +200,11 @@ function NavbarContent() {
                 placeholder="Search products or categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-5 pr-14 py-2.5 bg-stone-50 hover:bg-white text-xs sm:text-sm text-stone-900 rounded-full border-2 border-stone-800/80 focus:border-[#D9531E] focus:bg-white focus:outline-none transition-all placeholder:text-stone-400"
+                className="w-full pl-5 pr-14 py-2.5 bg-stone-50 hover:bg-white text-xs sm:text-sm text-stone-900 rounded-full border-2 border-stone-800/80 focus:border-[#242735] focus:bg-white focus:outline-none transition-all placeholder:text-stone-400"
               />
               <button
                 type="submit"
-                className="absolute right-1.5 top-1.5 bottom-1.5 px-4 bg-[#D9531E] hover:bg-[#BA4113] text-white rounded-full flex items-center justify-center transition-colors shadow-2xs"
+                className="absolute right-1.5 top-1.5 bottom-1.5 px-4 bg-[#242735] hover:bg-[#191C28] text-white rounded-full flex items-center justify-center transition-colors shadow-2xs"
                 title="Search"
               >
                 <Search className="w-4 h-4" />
@@ -167,7 +221,7 @@ function NavbarContent() {
                       router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
                       setSearchQuery('');
                     }}
-                    className="text-[#D9531E] font-bold hover:underline"
+                    className="text-[#242735] font-bold hover:underline"
                   >
                     View All
                   </button>
@@ -198,7 +252,7 @@ function NavbarContent() {
                             {product.category}
                           </span>
                         </div>
-                        <div className="text-xs font-bold text-[#D9531E] shrink-0">
+                        <div className="text-xs font-bold text-[#242735] shrink-0">
                           {formatPrice(product.priceBDT, product.priceUSD)}
                         </div>
                       </div>
@@ -220,7 +274,7 @@ function NavbarContent() {
             </button>
 
             {categoryDropdownOpen && (
-              <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-stone-200 py-2 z-50 animate-fade-in max-h-96 overflow-y-auto">
+              <div data-lenis-prevent className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-stone-200 py-2 z-50 animate-fade-in max-h-[min(70vh,24rem)] overflow-y-auto overscroll-contain">
                 {CATEGORIES.map((cat) => (
                   <div key={cat.id}>
                     <Link
@@ -253,7 +307,7 @@ function NavbarContent() {
               {currentUser ? (
                 <Link
                   href="/account/orders"
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0D1829] text-white hover:bg-[#D9531E] flex items-center justify-center transition-colors font-bold text-xs"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#242735] text-white hover:bg-[#242735] flex items-center justify-center transition-colors font-bold text-xs"
                   title="Your account and orders"
                   aria-label="Your account and orders"
                 >
@@ -274,8 +328,8 @@ function NavbarContent() {
 
               {/* Tooltip Bubble */}
               <div className="pointer-events-none absolute top-full mt-1.5 z-50 opacity-0 invisible -translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:visible group-hover/tooltip:translate-y-0 transition-all duration-150 ease-out">
-                <div className="relative bg-[#0D1829] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#0D1829] rotate-45" />
+                <div className="relative bg-[#242735] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#242735] rotate-45" />
                   <span className="relative z-10">{currentUser ? 'Your Account' : 'Sign Up'}</span>
                 </div>
               </div>
@@ -294,8 +348,8 @@ function NavbarContent() {
 
                 {/* Tooltip Bubble */}
                 <div className="pointer-events-none absolute top-full mt-1.5 z-50 opacity-0 invisible -translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:visible group-hover/tooltip:translate-y-0 transition-all duration-150 ease-out">
-                  <div className="relative bg-[#0D1829] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
-                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#0D1829] rotate-45" />
+                  <div className="relative bg-[#242735] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#242735] rotate-45" />
                     <span className="relative z-10">Help & Support</span>
                   </div>
                 </div>
@@ -312,7 +366,7 @@ function NavbarContent() {
                 <div className="relative">
                   <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
                   {wishlist.length > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#D9531E] text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-xs">
+                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#242735] text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-xs">
                       {wishlist.length}
                     </span>
                   )}
@@ -321,8 +375,8 @@ function NavbarContent() {
 
               {/* Tooltip Bubble */}
               <div className="pointer-events-none absolute top-full mt-1.5 z-50 opacity-0 invisible -translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:visible group-hover/tooltip:translate-y-0 transition-all duration-150 ease-out">
-                <div className="relative bg-[#0D1829] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#0D1829] rotate-45" />
+                <div className="relative bg-[#242735] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#242735] rotate-45" />
                   <span className="relative z-10">Favorites</span>
                 </div>
               </div>
@@ -338,7 +392,7 @@ function NavbarContent() {
                 <div className="relative">
                   <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
                   {cartCount > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#D9531E] text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-xs">
+                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#242735] text-white rounded-full text-[10px] font-bold flex items-center justify-center shadow-xs">
                       {cartCount}
                     </span>
                   )}
@@ -347,8 +401,8 @@ function NavbarContent() {
 
               {/* Tooltip Bubble */}
               <div className="pointer-events-none absolute top-full mt-1.5 z-50 opacity-0 invisible -translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:visible group-hover/tooltip:translate-y-0 transition-all duration-150 ease-out">
-                <div className="relative bg-[#0D1829] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#0D1829] rotate-45" />
+                <div className="relative bg-[#242735] text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#242735] rotate-45" />
                   <span className="relative z-10">Cart</span>
                 </div>
               </div>
@@ -364,11 +418,11 @@ function NavbarContent() {
               placeholder="Search unique items on soplol..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-4 pr-12 py-2 bg-stone-100 text-xs rounded-full border border-stone-300 focus:bg-white focus:outline-none focus:border-[#D9531E]"
+              className="w-full pl-4 pr-12 py-2 bg-stone-100 text-xs rounded-full border border-stone-300 focus:bg-white focus:outline-none focus:border-[#242735]"
             />
             <button
               type="submit"
-              className="absolute right-1 top-1 bottom-1 px-3 bg-[#D9531E] text-white rounded-full flex items-center justify-center"
+              className="absolute right-1 top-1 bottom-1 px-3 bg-[#242735] text-white rounded-full flex items-center justify-center"
             >
               <Search className="w-3.5 h-3.5" />
             </button>
@@ -384,7 +438,7 @@ function NavbarContent() {
                     router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
                     setSearchQuery('');
                   }}
-                  className="text-[#D9531E] font-bold"
+                  className="text-[#242735] font-bold"
                 >
                   View All
                 </button>
@@ -412,7 +466,7 @@ function NavbarContent() {
                       />
                       <div className="flex-1 min-w-0">
                         <h4 className="text-[11px] font-bold text-stone-900 truncate">{product.title}</h4>
-                        <div className="text-[10px] text-[#D9531E] font-bold">
+                        <div className="text-[10px] text-[#242735] font-bold">
                           {formatPrice(product.priceBDT, product.priceUSD)}
                         </div>
                       </div>
@@ -437,13 +491,13 @@ function NavbarContent() {
           <ul className="flex items-center gap-1.5 sm:gap-2 lg:gap-3 text-xs font-semibold py-2 whitespace-nowrap scrollbar-none justify-start md:justify-center w-max min-w-full">
             {/* Apple-style Master Store Hub Pill & Mega-Menu */}
             <li className="relative group/navitem subnav-item-container shrink-0">
-              <div className="inline-flex items-center rounded-full bg-stone-100/90 hover:bg-[#D9531E] border border-stone-200/80 shadow-2xs hover:shadow-xs transition-all duration-200 text-xs font-bold text-stone-900 hover:text-white">
+              <div className="inline-flex items-center rounded-full bg-stone-100/90 hover:bg-[#242735] border border-stone-200/80 shadow-2xs hover:shadow-xs transition-all duration-200 text-xs font-bold text-stone-900 hover:text-white">
                 <Link
                   href="/shop"
                   onClick={() => setActiveSubDropdown(null)}
                   className="pl-3.5 pr-1.5 py-1.5 flex items-center gap-1.5"
                 >
-                  <ShoppingBag className="w-3.5 h-3.5 text-[#D9531E] group-hover/navitem:text-white transition-colors" />
+                  <ShoppingBag className="w-3.5 h-3.5 text-[#242735] group-hover/navitem:text-white transition-colors" />
                   <span>Store</span>
                 </Link>
                 <button
@@ -472,7 +526,7 @@ function NavbarContent() {
                   <div className="flex items-center justify-between pb-3 border-b border-stone-100">
                     <div>
                       <h3 className="text-sm font-bold text-stone-950 font-serif flex items-center gap-1.5">
-                        <ShoppingBag className="w-4 h-4 text-[#D9531E]" />
+                        <ShoppingBag className="w-4 h-4 text-[#242735]" />
                         SOPLOL Store
                       </h3>
                       <p className="text-[11px] text-stone-500">
@@ -481,7 +535,7 @@ function NavbarContent() {
                     </div>
                     <Link
                       href="/shop"
-                      className="text-[11px] font-bold text-[#D9531E] hover:underline flex items-center gap-0.5"
+                      className="text-[11px] font-bold text-[#242735] hover:underline flex items-center gap-0.5"
                     >
                       All Listings ({products.length}) <ArrowRight className="w-3 h-3" />
                     </Link>
@@ -504,7 +558,7 @@ function NavbarContent() {
                         <Link
                           key={i}
                           href={item.href}
-                          className="flex items-center gap-2 p-2 rounded-2xl bg-stone-50 hover:bg-[#FAF3EA] border border-stone-200/70 hover:border-[#D9531E]/40 transition-all group/catcard"
+                          className="flex items-center gap-2 p-2 rounded-2xl bg-stone-50 hover:bg-[#E7DED0] border border-stone-200/70 hover:border-[#242735]/40 transition-all group/catcard"
                         >
                           <img
                             src={item.img}
@@ -512,7 +566,7 @@ function NavbarContent() {
                             className="w-10 h-10 rounded-xl object-cover shrink-0 group-hover/catcard:scale-105 transition-transform"
                           />
                           <div className="min-w-0">
-                            <h4 className="text-[11px] font-bold text-stone-900 group-hover/catcard:text-[#D9531E] truncate transition-colors leading-tight">
+                            <h4 className="text-[11px] font-bold text-stone-900 group-hover/catcard:text-[#242735] truncate transition-colors leading-tight">
                               {item.name}
                             </h4>
                             <span className="text-[10px] text-stone-500 block truncate">
@@ -532,15 +586,15 @@ function NavbarContent() {
                   <div className="pt-2 border-t border-stone-100 flex items-center justify-between text-[11px]">
                     <div className="flex items-center gap-2 text-stone-600 font-medium">
                       <span className="text-stone-400">Quick Filters:</span>
-                      <Link href="/shop?sort=featured" className="hover:text-[#D9531E] transition-colors">Featured Picks</Link>
+                      <Link href="/shop?sort=featured" className="hover:text-[#242735] transition-colors">Featured Picks</Link>
                       <span>•</span>
-                      <Link href="/shop?sort=new" className="hover:text-[#D9531E] transition-colors">✨ New Drops</Link>
+                      <Link href="/shop?sort=new" className="hover:text-[#242735] transition-colors">✨ New Drops</Link>
                       <span>•</span>
-                      <Link href="/shop?sort=price-low" className="hover:text-[#D9531E] transition-colors">৳ Budget Picks</Link>
+                      <Link href="/shop?sort=price-low" className="hover:text-[#242735] transition-colors">৳ Budget Picks</Link>
                     </div>
                     <Link
                       href="/shop"
-                      className="px-3 py-1 bg-[#D9531E] text-white font-bold rounded-lg hover:bg-[#BA4113] transition-colors"
+                      className="px-3 py-1 bg-[#242735] text-white font-bold rounded-lg hover:bg-[#191C28] transition-colors"
                     >
                       Visit Full Store →
                     </Link>
@@ -612,14 +666,14 @@ function NavbarContent() {
 
               return (
                 <li key={idx} className="relative group/navitem subnav-item-container shrink-0">
-                  <div className={`inline-flex items-center rounded-full border shadow-2xs hover:shadow-xs transition-all duration-200 pl-3.5 pr-2 py-1.5 text-xs ${isCurrentCategory ? 'bg-[#FAF3EA] border-[#D9531E]/30 font-extrabold text-[#D9531E]' : 'bg-stone-100/60 border-transparent font-semibold text-stone-700 hover:bg-white hover:border-stone-200/90 hover:text-stone-950'}`}>
+                  <div className={`inline-flex items-center rounded-full border shadow-2xs hover:shadow-xs transition-all duration-200 pl-3.5 pr-2 py-1.5 text-xs ${isCurrentCategory ? 'bg-[#E7DED0] border-[#242735]/30 font-extrabold text-[#242735]' : 'bg-stone-100/60 border-transparent font-semibold text-stone-700 hover:bg-white hover:border-stone-200/90 hover:text-stone-950'}`}>
                     <Link
                       href={cat.href}
                       onClick={() => setActiveSubDropdown(null)}
                       aria-current={isCurrentCategory ? 'page' : undefined}
-                      className={`flex items-center gap-1.5 transition-colors ${isCurrentCategory ? 'font-extrabold text-[#D9531E]' : 'hover:text-[#D9531E]'}`}
+                      className={`flex items-center gap-1.5 transition-colors ${isCurrentCategory ? 'font-extrabold text-[#242735]' : 'hover:text-[#242735]'}`}
                     >
-                      {Icon && <Icon className="w-3.5 h-3.5 text-[#D9531E]" />}
+                      {Icon && <Icon className="w-3.5 h-3.5 text-[#242735]" />}
                       <span>{cat.name}</span>
                     </Link>
                     <button
@@ -660,7 +714,7 @@ function NavbarContent() {
                               key={product.id}
                               href={`/product/${encodeURIComponent(product.id)}`}
                               onClick={() => setActiveSubDropdown(null)}
-                              className="text-[11px] font-medium text-stone-600 hover:text-[#D9531E] hover:bg-stone-50 p-1.5 rounded-lg block transition-colors leading-tight truncate"
+                              className="text-[11px] font-medium text-stone-600 hover:text-[#242735] hover:bg-stone-50 p-1.5 rounded-lg block transition-colors leading-tight truncate"
                             >
                               {product.title}
                             </Link>
@@ -682,7 +736,7 @@ function NavbarContent() {
                       <Link
                         href={cat.href}
                         onClick={() => setActiveSubDropdown(null)}
-                        className="w-full py-1.5 bg-stone-50 hover:bg-[#D9531E] hover:text-white text-stone-700 text-[11px] font-bold rounded-xl text-center flex items-center justify-center gap-1 transition-all"
+                        className="w-full py-1.5 bg-stone-50 hover:bg-[#242735] hover:text-white text-stone-700 text-[11px] font-bold rounded-xl text-center flex items-center justify-center gap-1 transition-all"
                       >
                         Browse all in {cat.name} <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -710,7 +764,7 @@ function NavbarContent() {
                 <div className="flex items-center justify-between pb-3 border-b border-stone-100">
                   <div>
                     <h3 className="text-sm font-bold text-stone-950 font-serif flex items-center gap-1.5">
-                      <ShoppingBag className="w-4 h-4 text-[#D9531E]" />
+                      <ShoppingBag className="w-4 h-4 text-[#242735]" />
                       SOPLOL Store
                     </h3>
                     <p className="text-[11px] text-stone-500">
@@ -738,7 +792,7 @@ function NavbarContent() {
                       key={i}
                       href={item.href}
                       onClick={() => setActiveSubDropdown(null)}
-                      className="flex items-center gap-2 p-2 rounded-xl bg-stone-50 hover:bg-[#FAF3EA] border border-stone-200/70"
+                      className="flex items-center gap-2 p-2 rounded-xl bg-stone-50 hover:bg-[#E7DED0] border border-stone-200/70"
                     >
                       <img src={item.img} alt={item.name} className="w-9 h-9 rounded-lg object-cover shrink-0" />
                       <span className="text-[11px] font-bold text-stone-900 truncate">{item.name}</span>
@@ -749,7 +803,7 @@ function NavbarContent() {
                 <Link
                   href="/shop"
                   onClick={() => setActiveSubDropdown(null)}
-                  className="w-full py-2.5 bg-[#D9531E] hover:bg-[#BA4113] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md text-center block"
+                  className="w-full py-2.5 bg-[#242735] hover:bg-[#191C28] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md text-center block"
                 >
                   Visit Full Store →
                 </Link>
@@ -826,7 +880,7 @@ function NavbarContent() {
                           key={product.id}
                           href={`/product/${encodeURIComponent(product.id)}`}
                           onClick={() => setActiveSubDropdown(null)}
-                          className="text-xs font-medium text-stone-700 hover:text-[#D9531E] hover:bg-stone-50 p-2 rounded-lg block transition-colors truncate"
+                          className="text-xs font-medium text-stone-700 hover:text-[#242735] hover:bg-stone-50 p-2 rounded-lg block transition-colors truncate"
                         >
                           {product.title}
                         </Link>
@@ -843,7 +897,7 @@ function NavbarContent() {
                   <Link
                     href={cat.href}
                     onClick={() => setActiveSubDropdown(null)}
-                    className="w-full py-2.5 bg-[#D9531E] hover:bg-[#BA4113] text-white font-bold text-xs uppercase tracking-wider rounded-xl text-center block shadow-md"
+                    className="w-full py-2.5 bg-[#242735] hover:bg-[#191C28] text-white font-bold text-xs uppercase tracking-wider rounded-xl text-center block shadow-md"
                   >
                     Browse all in {cat.name} →
                   </Link>
@@ -858,13 +912,10 @@ function NavbarContent() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-stone-200 bg-white px-5 py-4 space-y-3">
           <div className="pb-2 border-b border-stone-100">
-            <Image
-              src="/brand-text.png"
-              alt="soplol"
-              width={120}
-              height={40}
-              className="h-8 w-auto object-contain"
-            />
+            <span className="flex items-center gap-1.5">
+              <Image src="/brand-mark-icon.png" alt="" width={40} height={34} className="h-7 w-auto object-contain" />
+              <Image src="/soplol-wordmark.png" alt="soplol" width={120} height={40} className="h-7 w-auto object-contain" />
+            </span>
           </div>
 
           <Link
@@ -888,7 +939,7 @@ function NavbarContent() {
                     <Link
                       href={`/shop?category=${cat.id}`}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="font-bold text-stone-800 hover:text-[#D9531E] py-1.5 flex-1"
+                      className="font-bold text-stone-800 hover:text-[#242735] py-1.5 flex-1"
                     >
                       {cat.name}
                     </Link>
@@ -899,19 +950,19 @@ function NavbarContent() {
                         className="p-2 text-stone-400 hover:text-stone-900"
                         aria-label={`Expand ${cat.name}`}
                       >
-                        <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180 text-[#D9531E]' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180 text-[#242735]' : ''}`} />
                       </button>
                     )}
                   </div>
 
                   {isExpanded && (
-                    <div className="pl-3 py-1 space-y-1.5 border-l-2 border-[#D9531E]/30 my-1">
+                    <div className="pl-3 py-1 space-y-1.5 border-l-2 border-[#242735]/30 my-1">
                       {cat.subcategories.map((sub) => (
                         <Link
                           key={sub.id}
                           href={`/shop?category=${cat.id}&sub=${sub.id}`}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="block text-[11px] text-stone-600 hover:text-[#D9531E] py-1"
+                          className="block text-[11px] text-stone-600 hover:text-[#242735] py-1"
                         >
                           • {sub.name}
                         </Link>
@@ -925,7 +976,7 @@ function NavbarContent() {
             <Link
               href="/shop"
               onClick={() => setMobileMenuOpen(false)}
-              className="block font-bold text-[#D9531E] pt-2"
+              className="block font-bold text-[#242735] pt-2"
             >
               🔥 Browse All Collections ({products.length})
             </Link>
@@ -934,7 +985,7 @@ function NavbarContent() {
           <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
             {currentUser ? (
               <Link href="/account/orders" onClick={() => setMobileMenuOpen(false)} className="text-stone-600 font-medium flex items-center gap-1">
-                <UserPlus className="w-3.5 h-3.5 text-[#D9531E]" />
+                <UserPlus className="w-3.5 h-3.5 text-[#242735]" />
                 Your Orders
               </Link>
             ) : (
@@ -946,7 +997,7 @@ function NavbarContent() {
                 }}
                 className="text-stone-600 font-medium flex items-center gap-1"
               >
-                <UserPlus className="w-3.5 h-3.5 text-[#D9531E]" />
+                <UserPlus className="w-3.5 h-3.5 text-[#242735]" />
                 Sign Up
               </button>
             )}
@@ -958,7 +1009,7 @@ function NavbarContent() {
                 }}
                 className="text-stone-600 font-medium flex items-center gap-1"
               >
-                <HelpCircle className="w-3.5 h-3.5 text-[#D9531E]" />
+                <HelpCircle className="w-3.5 h-3.5 text-[#242735]" />
                 Help & Support
               </button>
             )}
@@ -973,12 +1024,14 @@ function NavbarContent() {
         </div>
       )}
     </header>
+    <div aria-hidden="true" className="h-[104px]" />
+    </>
   );
 }
 
 export default function Navbar() {
   return (
-    <Suspense fallback={<header className="sticky top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-stone-200/60 h-14" />}>
+    <Suspense fallback={<><header className="fixed inset-x-0 top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-stone-200/60 h-14" /><div aria-hidden="true" className="h-[104px]" /></>}>
       <NavbarContent />
     </Suspense>
   );

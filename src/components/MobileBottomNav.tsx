@@ -40,7 +40,7 @@ export default function MobileBottomNav() {
         <Link
           href="/"
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all duration-200 active:scale-90 cursor-pointer ${
-            isHome ? 'text-[#D9531E]' : 'text-stone-500 hover:text-stone-900'
+            isHome ? 'text-[#242735]' : 'text-stone-500 hover:text-stone-900'
           }`}
         >
           <Home className={`w-5 h-5 ${isHome ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
@@ -51,7 +51,7 @@ export default function MobileBottomNav() {
         <Link
           href="/shop"
           className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all duration-200 active:scale-90 cursor-pointer ${
-            isShop ? 'text-[#D9531E]' : 'text-stone-500 hover:text-stone-900'
+            isShop ? 'text-[#242735]' : 'text-stone-500 hover:text-stone-900'
           }`}
         >
           <Compass className={`w-5 h-5 ${isShop ? 'stroke-[2.5]' : 'stroke-[1.8]'}`} />
@@ -62,10 +62,10 @@ export default function MobileBottomNav() {
         <Link
           href="/wishlist"
           className={`relative flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all duration-200 active:scale-90 cursor-pointer ${
-            isWishlist ? 'text-[#D9531E]' : 'text-stone-500 hover:text-stone-900'
+            isWishlist ? 'text-[#242735]' : 'text-stone-500 hover:text-stone-900'
           }`}
         >
-          <Heart className={`w-5 h-5 ${isWishlist ? 'stroke-[2.5] fill-[#D9531E]/20 text-[#D9531E]' : 'stroke-[1.8]'}`} />
+          <Heart className={`w-5 h-5 ${isWishlist ? 'stroke-[2.5] fill-[#242735]/20 text-[#242735]' : 'stroke-[1.8]'}`} />
           <span className="text-[10px] font-semibold mt-0.5">Wishlist</span>
           {wishlist.length > 0 && (
             <span className="absolute top-0.5 right-2 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center shadow-xs">
@@ -83,7 +83,7 @@ export default function MobileBottomNav() {
           <ShoppingBag className="w-5 h-5 stroke-[1.8]" />
           <span className="text-[10px] font-semibold mt-0.5">Bag</span>
           {cartCount > 0 && (
-            <span className="absolute top-0.5 right-2 w-4 h-4 rounded-full bg-[#D9531E] text-white text-[9px] font-black flex items-center justify-center shadow-xs">
+            <span className="absolute top-0.5 right-2 w-4 h-4 rounded-full bg-[#242735] text-white text-[9px] font-black flex items-center justify-center shadow-xs">
               {cartCount}
             </span>
           )}
@@ -94,11 +94,11 @@ export default function MobileBottomNav() {
           <Link
             href="/account/orders"
             className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all duration-200 active:scale-90 cursor-pointer ${
-              isAccount ? 'text-[#D9531E]' : 'text-stone-500 hover:text-stone-900'
+              isAccount ? 'text-[#242735]' : 'text-stone-500 hover:text-stone-900'
             }`}
           >
             <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-              isAccount ? 'border-[#D9531E] bg-[#D9531E] text-white' : 'border-stone-300 bg-stone-100 text-stone-800'
+              isAccount ? 'border-[#242735] bg-[#242735] text-white' : 'border-stone-300 bg-stone-100 text-stone-800'
             }`}>
               <span className="text-[10px] font-bold">
                 {currentUser.name.charAt(0).toUpperCase()}

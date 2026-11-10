@@ -76,7 +76,7 @@ export default function AuthModal() {
 
           {success ? (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-3">
-              <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center animate-bounce">
+              <div className="w-16 h-16 bg-amber-100 text-slate-800 rounded-full flex items-center justify-center animate-bounce">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h4 className="text-lg font-bold text-stone-900">
@@ -87,9 +87,9 @@ export default function AuthModal() {
           ) : (
             <>
               {/* Demo Quick Login Banner */}
-              <div className="mb-4 p-3 bg-amber-50/90 border border-amber-200 rounded-xl flex items-center justify-between gap-2">
+              <div className="mb-4 p-3 bg-amber-50/90 border border-slate-200 rounded-xl flex items-center justify-between gap-2">
                 <div className="text-left">
-                  <span className="inline-block px-1.5 py-0.5 bg-amber-200 text-amber-900 font-bold rounded text-[10px] uppercase tracking-wider mb-0.5">
+                  <span className="inline-block px-1.5 py-0.5 bg-slate-200 text-slate-950 font-bold rounded text-[10px] uppercase tracking-wider mb-0.5">
                     Demo Review Account
                   </span>
                   <p className="text-[11px] text-stone-600 font-mono">
@@ -103,7 +103,7 @@ export default function AuthModal() {
                     setEmail('demo@soplol.com');
                     setPassword('demo1234');
                   }}
-                  className="shrink-0 px-3 py-1.5 bg-[#D9531E] hover:bg-[#BA4113] text-white text-[11px] font-bold rounded-lg transition-colors cursor-pointer shadow-xs"
+                  className="shrink-0 px-3 py-1.5 bg-[#242735] hover:bg-[#191C28] text-white text-[11px] font-bold rounded-lg transition-colors cursor-pointer shadow-xs"
                 >
                   Auto-fill
                 </button>
@@ -121,7 +121,7 @@ export default function AuthModal() {
                       placeholder="e.g. Tanvir Ahmed"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#D9531E] focus:bg-white focus:outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-3 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#242735] focus:bg-white focus:outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -137,7 +137,7 @@ export default function AuthModal() {
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#D9531E] focus:bg-white focus:outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-3 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#242735] focus:bg-white focus:outline-none transition-all"
                   />
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default function AuthModal() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-12 py-3 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#D9531E] focus:bg-white focus:outline-none transition-all"
+                    className="w-full pl-10 pr-12 py-3 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#242735] focus:bg-white focus:outline-none transition-all"
                   />
                   <button
                     type="button"
@@ -167,7 +167,7 @@ export default function AuthModal() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 bg-[#D9531E] hover:bg-[#BA4113] text-white rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.99] disabled:opacity-50 mt-2"
+                className="w-full py-3.5 bg-[#242735] hover:bg-[#191C28] text-white rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.99] disabled:opacity-50 mt-2"
               >
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -187,7 +187,7 @@ export default function AuthModal() {
                     <button
                       type="button"
                       onClick={() => setAuthMode('signin')}
-                      className="text-[#D9531E] font-bold hover:underline"
+                      className="text-[#242735] font-bold hover:underline"
                     >
                       Sign In
                     </button>
@@ -198,7 +198,7 @@ export default function AuthModal() {
                     <button
                       type="button"
                       onClick={() => setAuthMode('signup')}
-                      className="text-[#D9531E] font-bold hover:underline"
+                      className="text-[#242735] font-bold hover:underline"
                     >
                       Sign Up
                     </button>

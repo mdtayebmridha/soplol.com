@@ -68,7 +68,7 @@ export default function HelpModal() {
         <div className="p-8">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="w-12 h-12 bg-orange-100 text-[#D9531E] rounded-full flex items-center justify-center mx-auto mb-3">
+            <div className="w-12 h-12 bg-amber-100 text-[#242735] rounded-full flex items-center justify-center mx-auto mb-3">
               <HelpCircle className="w-6 h-6" />
             </div>
             <h3 className="text-2xl font-bold text-stone-900 tracking-tight">How can we help you?</h3>
@@ -79,7 +79,7 @@ export default function HelpModal() {
 
           {submitted ? (
             <div className="py-8 flex flex-col items-center justify-center text-center space-y-3">
-              <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center animate-bounce">
+              <div className="w-14 h-14 bg-amber-100 text-slate-800 rounded-full flex items-center justify-center animate-bounce">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
               <h4 className="text-base font-bold text-stone-900">Message Received!</h4>
@@ -97,7 +97,7 @@ export default function HelpModal() {
                   placeholder="Your name"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#D9531E] focus:bg-white focus:outline-none transition-all"
+                  className="w-full px-4 py-2.5 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#242735] focus:bg-white focus:outline-none transition-all"
                 />
               </div>
 
@@ -111,7 +111,7 @@ export default function HelpModal() {
                     placeholder="you@example.com"
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#D9531E] focus:bg-white focus:outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#242735] focus:bg-white focus:outline-none transition-all"
                   />
                 </div>
               </div>
@@ -126,7 +126,7 @@ export default function HelpModal() {
                     placeholder="e.g. Question about order #SPL-1002"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#D9531E] focus:bg-white focus:outline-none transition-all"
+                    className="w-full pl-10 pr-4 py-2.5 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#242735] focus:bg-white focus:outline-none transition-all"
                   />
                 </div>
               </div>
@@ -139,14 +139,14 @@ export default function HelpModal() {
                   placeholder="Describe your issue or question..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="w-full p-3 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#D9531E] focus:bg-white focus:outline-none transition-all resize-none"
+                  className="w-full p-3 bg-stone-50 text-xs sm:text-sm text-stone-900 rounded-xl border border-stone-200 focus:border-[#242735] focus:bg-white focus:outline-none transition-all resize-none"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 bg-[#D9531E] hover:bg-[#BA4113] text-white rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.99] disabled:opacity-50"
+                className="w-full py-3 bg-[#242735] hover:bg-[#191C28] text-white rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-[0.99] disabled:opacity-50"
               >
                 {loading ? (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

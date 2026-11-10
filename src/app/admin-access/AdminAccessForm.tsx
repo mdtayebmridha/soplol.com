@@ -19,7 +19,7 @@ export default function AdminAccessForm() {
           autoComplete="current-password"
           required
           maxLength={512}
-          className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-[#D9531E] focus:ring-2 focus:ring-[#D9531E]/20"
+          className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-[#242735] focus:ring-2 focus:ring-[#242735]/20"
         />
       </div>
 
@@ -32,7 +32,7 @@ export default function AdminAccessForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-xl bg-[#D9531E] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#BA4113] disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-xl bg-[#242735] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#191C28] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {pending ? 'Checking access…' : 'Continue to admin'}
       </button>

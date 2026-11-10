@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AdminAccessPage() {
   return (
-    <main className="min-h-screen bg-[#FAF9F6] px-4 py-16 flex items-center justify-center">
+    <main className="min-h-screen bg-[#F3EDE3] px-4 py-16 flex items-center justify-center">
       <section className="w-full max-w-md rounded-3xl border border-stone-200 bg-white p-8 shadow-sm sm:p-10">
         <Link href="/" className="mb-8 inline-block">
           <Image src="/brand-text.png" alt="soplol" width={130} height={44} className="h-8 w-auto" />

@@ -79,7 +79,7 @@ export default function QuickViewModal() {
         </button>
 
         {/* Product gallery */}
-        <div className="w-full md:w-1/2 p-5 sm:p-7 bg-[#FAF9F6] border-b md:border-b-0 md:border-r border-stone-200/80 flex flex-col justify-between">
+        <div className="w-full md:w-1/2 p-5 sm:p-7 bg-[#F3EDE3] border-b md:border-b-0 md:border-r border-stone-200/80 flex flex-col justify-between">
           <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-stone-200 shadow-inner group">
             <img
               src={product.images[selectedImageIndex] || product.images[0]}
@@ -105,7 +105,7 @@ export default function QuickViewModal() {
                   onClick={() => setSelectedImageIndex(i)}
                   className={`w-14 h-14 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
                     selectedImageIndex === i
-                      ? 'border-[#D9531E] shadow-sm scale-105'
+                      ? 'border-[#242735] shadow-sm scale-105'
                       : 'border-stone-200 opacity-70 hover:opacity-100'
                   }`}
                 >
@@ -120,7 +120,7 @@ export default function QuickViewModal() {
         <div className="w-full md:w-1/2 p-5 sm:p-7 overflow-y-auto space-y-4">
           <div>
             <div className="flex items-center gap-2 text-xs text-stone-500 mb-1">
-              <span className="uppercase font-bold tracking-wider text-[#D9531E]">
+              <span className="uppercase font-bold tracking-wider text-[#242735]">
                 {product.category}
               </span>
             </div>
@@ -162,7 +162,7 @@ export default function QuickViewModal() {
             <div className="space-y-1.5 p-3.5 rounded-2xl bg-stone-50 border border-stone-200">
               <label className="text-xs font-bold text-stone-800 flex items-center justify-between">
                 <span>✍️ Add Your Personalization</span>
-                <span className="text-[10px] text-amber-700 font-medium">Optional</span>
+                <span className="text-[10px] text-slate-800 font-medium">Optional</span>
               </label>
               <input
                 type="text"
@@ -170,7 +170,7 @@ export default function QuickViewModal() {
                 value={personalizationText}
                 onChange={(e) => setPersonalizationText(e.target.value)}
                 maxLength={500}
-                className="w-full text-xs px-3 py-2 bg-white rounded-xl border border-stone-200 focus:outline-hidden focus:ring-2 focus:ring-[#D9531E]"
+                className="w-full text-xs px-3 py-2 bg-white rounded-xl border border-stone-200 focus:outline-hidden focus:ring-2 focus:ring-[#242735]"
               />
               <p className="text-[10px] text-stone-400">
                 This note is saved with your cart and order.
@@ -201,8 +201,8 @@ export default function QuickViewModal() {
               disabled={!product.inStock}
               className={`flex-1 py-3 px-6 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md ${
                 addedAnimation
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-[#D9531E] hover:bg-[#BA4113] text-white active:scale-95'
+                  ? 'bg-slate-800 text-white'
+                  : 'bg-[#242735] hover:bg-[#191C28] text-white active:scale-95'
               }`}
             >
               {addedAnimation ? (
@@ -222,7 +222,7 @@ export default function QuickViewModal() {
             <Link
               href={`/product/${product.id}`}
               onClick={close}
-              className="text-xs font-bold text-stone-600 hover:text-[#D9531E] inline-flex items-center gap-1 group transition-colors"
+              className="text-xs font-bold text-stone-600 hover:text-[#242735] inline-flex items-center gap-1 group transition-colors"
             >
               View product details{' '}
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />

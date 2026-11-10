@@ -77,12 +77,12 @@ export default function AdminSidebar({ children }: { children: React.ReactNode }
     <div className="h-screen bg-stone-100 flex overflow-hidden">
       {/* Sidebar */}
       <aside
-        className={`bg-[#0D1829] text-white w-72 shrink-0 flex flex-col shadow-xl transition-all h-screen overflow-hidden border-r border-stone-800 ${
+        className={`bg-[#242735] text-white w-72 shrink-0 flex flex-col shadow-xl transition-all h-screen overflow-hidden border-r border-stone-800 ${
           sidebarOpen ? 'flex' : 'hidden lg:flex'
         }`}
       >
         {/* Sidebar Header */}
-        <div className="h-20 px-5 flex items-center justify-between border-b border-stone-800 bg-[#0A1320]">
+        <div className="h-20 px-5 flex items-center justify-between border-b border-stone-800 bg-[#191C28]">
           <Link href="/admin" className="flex items-center gap-3">
             <div className="bg-white p-1.5 rounded-xl shadow-md flex items-center justify-center shrink-0">
               <Image
@@ -97,7 +97,7 @@ export default function AdminSidebar({ children }: { children: React.ReactNode }
               <span className="text-xs font-black tracking-wider text-white">
                 SOPLOL
               </span>
-              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                 Admin Panel
               </span>
             </div>
@@ -127,7 +127,7 @@ export default function AdminSidebar({ children }: { children: React.ReactNode }
                       href={item.href}
                       className={`flex items-center justify-between px-3 py-2.5 rounded-xl font-medium transition-all ${
                         isActive
-                          ? 'bg-[#D9531E] text-white font-bold shadow-md'
+                          ? 'bg-[#242735] text-white font-bold shadow-md'
                           : 'text-stone-300 hover:bg-stone-800/70 hover:text-white'
                       }`}
                     >
@@ -188,8 +188,8 @@ export default function AdminSidebar({ children }: { children: React.ReactNode }
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-slate-800 text-xs font-semibold border border-slate-200">
+              <span className="w-2 h-2 rounded-full bg-slate-600 animate-pulse" />
               Live Server
             </span>
             <Link

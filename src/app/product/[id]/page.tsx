@@ -59,7 +59,7 @@ function ProductDetailContent() {
         </p>
         <Link
           href="/shop"
-          className="px-6 py-3 bg-[#D9531E] text-white rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#BA4113] transition-colors"
+          className="px-6 py-3 bg-[#242735] text-white rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#191C28] transition-colors"
         >
           Return to Shop
         </Link>
@@ -118,7 +118,7 @@ function ProductDetailContent() {
   };
 
   return (
-    <div className="w-full bg-[#FAF9F6] min-h-screen">
+    <div className="w-full bg-[#F3EDE3] min-h-screen">
       <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-6 sm:py-10 space-y-12 sm:space-y-16">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-stone-500 overflow-x-auto whitespace-nowrap pb-1">
@@ -152,7 +152,7 @@ function ProductDetailContent() {
                     onClick={() => setSelectedImageIndex(idx)}
                     className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
                       selectedImageIndex === idx
-                        ? 'border-[#D9531E] ring-2 ring-[#D9531E]/20'
+                        ? 'border-[#242735] ring-2 ring-[#242735]/20'
                         : 'border-stone-200 opacity-70 hover:opacity-100'
                     }`}
                   >
@@ -195,16 +195,16 @@ function ProductDetailContent() {
           </div>
         <div className="lg:col-span-5 space-y-6">
           <div className="space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#D9531E]">{product.category}</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-[#242735]">{product.category}</p>
             <h1 className="font-serif text-3xl font-black leading-tight text-stone-900 sm:text-4xl">{product.title}</h1>
             {product.shortDescription && <p className="text-sm leading-relaxed text-stone-600">{product.shortDescription}</p>}
             <div className="flex items-center justify-between border-b border-stone-200 pb-4">
               <div className="flex items-baseline gap-3">
                 <span className="text-2xl font-extrabold text-stone-900">{formatPrice(product.priceBDT, product.priceUSD)}</span>
                 {comparePrice && comparePrice > currentPrice && <span className="text-sm text-stone-400 line-through">{formatPrice(product.compareAtPriceBDT ?? 0, product.compareAtPriceUSD ?? 0)}</span>}
-                {discountPercent && <span className="rounded-full bg-orange-100 px-2 py-1 text-[10px] font-bold text-[#D9531E]">{discountPercent}% off</span>}
+                {discountPercent && <span className="rounded-full bg-amber-100 px-2 py-1 text-[10px] font-bold text-[#242735]">{discountPercent}% off</span>}
               </div>
-              <span className={`text-xs font-semibold ${product.inStock ? 'text-emerald-700' : 'text-red-600'}`}>{product.inStock ? 'In stock' : 'Out of stock'}</span>
+              <span className={`text-xs font-semibold ${product.inStock ? 'text-slate-800' : 'text-red-600'}`}>{product.inStock ? 'In stock' : 'Out of stock'}</span>
             </div>
           </div>
 
@@ -214,7 +214,7 @@ function ProductDetailContent() {
               <div className="flex flex-wrap gap-2">
                 {variant.options.map((option) => (
                   <button key={option} type="button" onClick={() => handleVariantSelect(variant.name, option)} aria-pressed={selectedVariants[variant.name] === option}
-                    className={`rounded-full border px-3 py-2 text-xs font-medium transition-colors ${selectedVariants[variant.name] === option ? 'border-[#D9531E] bg-[#FAF3EA] text-[#8F3415]' : 'border-stone-200 bg-white text-stone-700 hover:border-stone-400'}`}>
+                    className={`rounded-full border px-3 py-2 text-xs font-medium transition-colors ${selectedVariants[variant.name] === option ? 'border-[#242735] bg-[#E7DED0] text-[#191C28]' : 'border-stone-200 bg-white text-stone-700 hover:border-stone-400'}`}>
                     {option}
                   </button>
                 ))}
@@ -225,7 +225,7 @@ function ProductDetailContent() {
           {isCustomizable && <label className="block space-y-2 text-xs font-bold text-stone-800">
             Personalization note (optional)
             <textarea value={personalizationText} onChange={(event) => setPersonalizationText(event.target.value)} maxLength={500} rows={3} placeholder="Add a name or note for this item"
-              className="w-full rounded-xl border border-stone-200 bg-white p-3 text-xs font-normal text-stone-900 focus:border-[#D9531E] focus:outline-none" />
+              className="w-full rounded-xl border border-stone-200 bg-white p-3 text-xs font-normal text-stone-900 focus:border-[#242735] focus:outline-none" />
           </label>}
 
           <div className="flex items-center gap-3">
@@ -248,7 +248,7 @@ function ProductDetailContent() {
             <button type="button" onClick={handleAddToCart} disabled={!product.inStock} className="flex w-full items-center justify-center gap-2 rounded-xl border border-stone-300 bg-white py-4 text-xs font-bold uppercase tracking-wider text-stone-900 transition hover:bg-stone-50 disabled:opacity-50">
               <ShoppingBag className="h-4 w-4" /> Add to cart
             </button>
-            <button type="button" onClick={handleBuyNow} disabled={!product.inStock} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#D9531E] py-4 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-[#BA4113] disabled:opacity-50">
+            <button type="button" onClick={handleBuyNow} disabled={!product.inStock} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#242735] py-4 text-xs font-bold uppercase tracking-wider text-white shadow-md transition hover:bg-[#191C28] disabled:opacity-50">
               Buy now <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -265,7 +265,7 @@ function ProductDetailContent() {
             </h3>
             <Link
               href={`/shop?category=${product.category}`}
-              className="text-xs font-bold text-[#D9531E] hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-[#242735] hover:underline flex items-center gap-1"
             >
               Explore {product.category} <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -279,7 +279,7 @@ function ProductDetailContent() {
       )}
 
       <section className="pt-8 border-t border-stone-200">
-        <Link href={`/shop?category=${product.category}`} className="text-sm font-semibold text-[#D9531E] hover:underline">
+        <Link href={`/shop?category=${product.category}`} className="text-sm font-semibold text-[#242735] hover:underline">
           Browse more in {product.category === 'home' ? 'Home & Living' : product.category === 'office' ? 'Desk & Office' : product.category === 'gifts' ? 'Gifts & Celebrations' : 'Fashion & Apparel'}
         </Link>
       </section>

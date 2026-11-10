@@ -4,13 +4,13 @@ export default function ShippingPolicyPage() {
   return (
     <main className="mx-auto max-w-4xl space-y-8 px-4 py-16 text-neutral-900">
       <header className="border-b border-neutral-200 pb-6">
-        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-600">Delivery Guide</span>
+        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-800">Delivery Guide</span>
         <h1 className="text-3xl font-extrabold tracking-tight">Shipping &amp; Delivery</h1>
         <p className="mt-2 text-sm text-neutral-500">Current delivery charges and checkout coverage.</p>
       </header>
       <section className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-6 shadow-xs sm:p-8">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700"><Truck className="h-5 w-5" /></div>
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-slate-800"><Truck className="h-5 w-5" /></div>
           <div>
             <h2 className="text-lg font-bold">Bangladesh delivery</h2>
             <p className="text-xs text-neutral-500">Choose the delivery area at checkout. The charge is included in the total before confirmation.</p>

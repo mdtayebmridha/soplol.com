@@ -14,7 +14,7 @@ function AdminPlaceholderContent() {
   return (
     <AdminSidebar>
       <div className="max-w-4xl mx-auto py-16 px-4 text-center space-y-6">
-        <div className="w-16 h-16 bg-orange-100 text-[#D9531E] rounded-2xl flex items-center justify-center mx-auto shadow-inner">
+        <div className="w-16 h-16 bg-amber-100 text-[#242735] rounded-2xl flex items-center justify-center mx-auto shadow-inner">
           <Wrench className="w-8 h-8 animate-pulse" />
         </div>
         <div className="space-y-2">
@@ -28,7 +28,7 @@ function AdminPlaceholderContent() {
         <div className="pt-4">
           <a
             href="/admin"
-            className="inline-flex items-center justify-center px-6 py-3 bg-[#D9531E] hover:bg-[#BA4113] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all"
+            className="inline-flex items-center justify-center px-6 py-3 bg-[#242735] hover:bg-[#191C28] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all"
           >
             Back to Dashboard
           </a>

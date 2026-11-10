@@ -26,10 +26,10 @@ function OrderSuccessContent() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-16 text-center text-neutral-900 sm:py-24">
-      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+      <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-slate-800">
         <CheckCircle2 className="h-9 w-9" aria-hidden="true" />
       </div>
-      <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">
+      <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-800">
         {paymentResult === 'failed' ? 'Payment not confirmed' : isPaid ? 'Payment confirmed' : 'Order received'}
       </p>
       <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
@@ -47,7 +47,7 @@ function OrderSuccessContent() {
 
       <section className="mx-auto mt-8 max-w-md rounded-2xl border border-neutral-200 bg-white p-5 text-left shadow-xs">
         <div className="flex items-start gap-3">
-          <PackageCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#D9531E]" aria-hidden="true" />
+          <PackageCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#242735]" aria-hidden="true" />
           <div>
             <p className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
               Order number

@@ -248,7 +248,7 @@ export default function CheckoutPage() {
           </p>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-stone-600 bg-white px-3 py-1.5 rounded-full border border-stone-200">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#D9531E]" />
+          <ShieldCheck className="w-3.5 h-3.5 text-[#242735]" />
           <span>{sslcommerzEnabled ? 'SSLCommerz online payment is available' : 'Online payment is not available'}</span>
         </div>
       </div>
@@ -267,7 +267,7 @@ export default function CheckoutPage() {
                 onClick={() => handleMarketTypeChange('bd')}
                 className={`py-3 px-4 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
                   marketType === 'bd'
-                    ? 'border-emerald-600 bg-emerald-50/80 text-emerald-950 ring-2 ring-emerald-600/20'
+                    ? 'border-slate-800 bg-amber-50/80 text-slate-950 ring-2 ring-slate-800/20'
                     : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'
                 }`}
               >
@@ -290,7 +290,7 @@ export default function CheckoutPage() {
           {/* Customer & Shipping Information */}
           <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-xs space-y-4">
             <h3 className="text-sm font-bold text-neutral-900 uppercase tracking-wider flex items-center gap-2">
-              <Truck className="w-4 h-4 text-amber-600" />
+              <Truck className="w-4 h-4 text-slate-800" />
               1. Delivery Address & Contact
             </h3>
 
@@ -438,29 +438,29 @@ export default function CheckoutPage() {
           {/* Payment Method Selection */}
           <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-xs space-y-4">
             <h3 className="text-sm font-bold text-neutral-900 uppercase tracking-wider flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-[#D9531E]" />
+              <CreditCard className="w-4 h-4 text-[#242735]" />
               2. Payment Method
             </h3>
 
             {marketType === 'bd' ? (
               <div className="space-y-3">
-                <label className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 ${paymentMethod === 'cod' ? 'border-[#D9531E]/40 bg-[#FAF3EA]' : 'border-neutral-200'}`}>
+                <label className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 ${paymentMethod === 'cod' ? 'border-[#242735]/40 bg-[#E7DED0]' : 'border-neutral-200'}`}>
                   <input type="radio" name="paymentMethod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} />
                   <span>
-                    <span className="flex items-center gap-2 text-xs font-bold text-neutral-900"><Banknote className="h-4 w-4 text-[#D9531E]" />Cash on Delivery</span>
+                    <span className="flex items-center gap-2 text-xs font-bold text-neutral-900"><Banknote className="h-4 w-4 text-[#242735]" />Cash on Delivery</span>
                     <span className="mt-1 block text-[11px] text-neutral-600">Pay the courier when your order arrives.</span>
                   </span>
                 </label>
-                <label className={`flex items-start gap-3 rounded-xl border p-4 ${sslcommerzEnabled ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'} ${paymentMethod === 'sslcommerz' ? 'border-[#D9531E]/40 bg-[#FAF3EA]' : 'border-neutral-200'}`}>
+                <label className={`flex items-start gap-3 rounded-xl border p-4 ${sslcommerzEnabled ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'} ${paymentMethod === 'sslcommerz' ? 'border-[#242735]/40 bg-[#E7DED0]' : 'border-neutral-200'}`}>
                   <input type="radio" name="paymentMethod" checked={paymentMethod === 'sslcommerz'} disabled={!sslcommerzEnabled} onChange={() => setPaymentMethod('sslcommerz')} />
                   <span>
-                    <span className="flex items-center gap-2 text-xs font-bold text-neutral-900"><CreditCard className="h-4 w-4 text-[#D9531E]" />SSLCommerz hosted checkout</span>
+                    <span className="flex items-center gap-2 text-xs font-bold text-neutral-900"><CreditCard className="h-4 w-4 text-[#242735]" />SSLCommerz hosted checkout</span>
                     <span className="mt-1 block text-[11px] text-neutral-600">{sslcommerzEnabled ? 'Pay securely through SSLCommerz.' : 'Online payments are unavailable until merchant credentials are configured.'}</span>
                   </span>
                 </label>
               </div>
             ) : (
-              <p className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs leading-relaxed text-amber-900">
+              <p className="rounded-xl border border-slate-200 bg-amber-50 p-4 text-xs leading-relaxed text-slate-950">
                 International checkout is not currently available.
               </p>
             )}
@@ -489,7 +489,7 @@ export default function CheckoutPage() {
                         `• ${Object.values(item.selectedVariants).join(', ')}`}
                     </div>
                     {item.personalizationText && (
-                      <div className="text-[10px] text-[#803B00] bg-[#FDEBD2] px-1.5 py-0.5 rounded font-medium mt-0.5 inline-block">
+                      <div className="text-[10px] text-[#191C28] bg-[#DDE2E3] px-1.5 py-0.5 rounded font-medium mt-0.5 inline-block">
                         Note: &quot;{item.personalizationText}&quot;
                       </div>
                     )}
@@ -506,19 +506,19 @@ export default function CheckoutPage() {
 
             {/* Luxury Gift Wrapping Option */}
             <div className="pt-3 border-t border-neutral-100">
-              <label className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50/70 border border-amber-200/80 cursor-pointer hover:bg-amber-50 transition-colors">
+              <label className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-50/70 border border-slate-200/80 cursor-pointer hover:bg-amber-50 transition-colors">
                 <input
                   type="checkbox"
                   checked={addGiftWrap}
                   onChange={(e) => setAddGiftWrap(e.target.checked)}
-                  className="mt-0.5 rounded text-[#D9531E] focus:ring-[#D9531E]"
+                  className="mt-0.5 rounded text-[#242735] focus:ring-[#242735]"
                 />
                 <div className="flex-1 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-stone-900 flex items-center gap-1.5">
                       🎁 Add Luxury Jute Gift Wrap
                     </span>
-                    <span className="text-[10px] text-[#803B00] bg-[#FDEBD2] px-2 py-0.5 rounded-full font-extrabold">
+                    <span className="text-[10px] text-[#191C28] bg-[#DDE2E3] px-2 py-0.5 rounded-full font-extrabold">
                       +{currency === 'BDT' ? '৳৫০' : '$1.00'}
                     </span>
                   </div>
@@ -538,7 +538,7 @@ export default function CheckoutPage() {
                     value={giftWrapNote}
                     onChange={(e) => setGiftWrapNote(e.target.value)}
                     placeholder="e.g. Wishing you a very Happy Birthday! From Fahim & Family."
-                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:outline-hidden focus:border-[#D9531E]"
+                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:outline-hidden focus:border-[#242735]"
                   />
                 </div>
               )}
@@ -566,7 +566,7 @@ export default function CheckoutPage() {
                 </button>
               </div>
               {appliedDiscount > 0 && (
-                <span className="text-[11px] text-emerald-600 font-semibold block mt-1">
+                <span className="text-[11px] text-slate-800 font-semibold block mt-1">
                   ✓ {appliedDiscount * 100}% Discount Applied
                 </span>
               )}
@@ -582,7 +582,7 @@ export default function CheckoutPage() {
               </div>
 
               {appliedDiscount > 0 && (
-                <div className="flex justify-between text-emerald-600">
+                <div className="flex justify-between text-slate-800">
                   <span>Discount</span>
                   <span>
                     -{currency === 'BDT' ? `৳${discountAmount.toLocaleString()}` : `$${discountAmount.toFixed(2)}`}
@@ -631,7 +631,7 @@ export default function CheckoutPage() {
             </button>
 
             <div className="flex items-center justify-center gap-2 text-[11px] text-neutral-400 pt-1">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <ShieldCheck className="w-4 h-4 text-slate-800" />
               <span>Use your order number and checkout phone to check order status.</span>
             </div>
           </div>

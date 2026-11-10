@@ -47,8 +47,8 @@ export default function CartDrawer() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 border-b border-amber-100/60 bg-amber-50/70 p-4 text-xs text-amber-900">
-            <Truck className="h-4 w-4 shrink-0 text-amber-600" />
+          <div className="flex items-center gap-2 border-b border-amber-100/60 bg-amber-50/70 p-4 text-xs text-slate-950">
+            <Truck className="h-4 w-4 shrink-0 text-slate-800" />
             Delivery charge depends on the selected area and is shown at checkout.
           </div>
           {/* Cart Items List */}
@@ -110,7 +110,7 @@ export default function CartDrawer() {
 
                       {/* Etsy-Style Personalization */}
                       {item.personalizationText && (
-                        <div className="text-[11px] text-[#803B00] bg-[#FDEBD2] px-2 py-0.5 rounded font-medium mt-1 inline-block">
+                        <div className="text-[11px] text-[#191C28] bg-[#DDE2E3] px-2 py-0.5 rounded font-medium mt-1 inline-block">
                           Custom: &quot;{item.personalizationText}&quot;
                         </div>
                       )}
@@ -174,14 +174,14 @@ export default function CartDrawer() {
               <Link
                 href="/checkout"
                 onClick={() => setIsCartOpen(false)}
-                className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#D9531E] hover:bg-[#BA4113] text-white rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-[0.99]"
+                className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#242735] hover:bg-[#191C28] text-white rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-[0.99]"
               >
                 Proceed to Checkout
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <div className="flex items-center justify-center gap-2 text-xs text-neutral-500 pt-1">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <ShieldCheck className="w-4 h-4 text-slate-800" />
                 <span>Cash on Delivery available for Bangladesh orders.</span>
               </div>
             </div>

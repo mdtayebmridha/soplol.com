@@ -53,7 +53,7 @@ export default function TrackOrderPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
       <div className="text-center space-y-3 mb-10">
-        <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">
+        <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
           Order Status
         </span>
         <h1 className="text-3xl font-extrabold text-neutral-900 tracking-tight">
@@ -114,7 +114,7 @@ export default function TrackOrderPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded-full text-xs font-bold uppercase tracking-wider">
+                  <span className="px-3 py-1 bg-amber-50 text-slate-900 border border-slate-200 rounded-full text-xs font-bold uppercase tracking-wider">
                     Status: {matchedOrder.orderStatus}
                   </span>
                 </div>
@@ -125,7 +125,7 @@ export default function TrackOrderPage() {
                 <div className="grid grid-cols-4 gap-2 text-center text-xs">
                   {/* Step 1 */}
                   <div className="space-y-2">
-                    <div className="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-xs">
+                    <div className="w-9 h-9 rounded-full bg-slate-800 text-white flex items-center justify-center mx-auto shadow-xs">
                       <CheckCircle2 className="w-5 h-5" />
                     </div>
                     <span className="font-bold text-neutral-900 block">Order Placed</span>
@@ -137,7 +137,7 @@ export default function TrackOrderPage() {
                     <div
                       className={`w-9 h-9 rounded-full flex items-center justify-center mx-auto shadow-xs ${
                         ['confirmed', 'processing', 'shipped', 'delivered'].includes(matchedOrder.orderStatus)
-                          ? 'bg-emerald-600 text-white'
+                          ? 'bg-slate-800 text-white'
                           : 'bg-neutral-100 text-neutral-400'
                       }`}
                     >
@@ -156,7 +156,7 @@ export default function TrackOrderPage() {
                     <div
                       className={`w-9 h-9 rounded-full flex items-center justify-center mx-auto shadow-xs ${
                         ['shipped', 'delivered'].includes(matchedOrder.orderStatus)
-                          ? 'bg-emerald-600 text-white'
+                          ? 'bg-slate-800 text-white'
                           : 'bg-neutral-100 text-neutral-400'
                       }`}
                     >
@@ -173,7 +173,7 @@ export default function TrackOrderPage() {
                     <div
                       className={`w-9 h-9 rounded-full flex items-center justify-center mx-auto shadow-xs ${
                         matchedOrder.orderStatus === 'delivered'
-                          ? 'bg-emerald-600 text-white'
+                          ? 'bg-slate-800 text-white'
                           : 'bg-neutral-100 text-neutral-400'
                       }`}
                     >
@@ -217,7 +217,7 @@ export default function TrackOrderPage() {
             </div>
           ) : (
             <div className="bg-white rounded-2xl border border-neutral-200 p-10 text-center max-w-md mx-auto">
-              <AlertCircle className="w-10 h-10 text-amber-500 mx-auto mb-3" />
+              <AlertCircle className="w-10 h-10 text-slate-600 mx-auto mb-3" />
               <h4 className="text-base font-bold text-neutral-900 mb-1">
                 {errorMessage.includes('unavailable') || errorMessage.includes('Too many')
                   ? 'Tracking Unavailable'
